@@ -15,6 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
+/**
+ * Repository class that gets the values from api calls
+ * @param catApiService Api service for sending requests
+ */
 class CatRepository private constructor(private val catApiService: CatApiService) {
 
     enum class CatApiStatus { LOADING, ERROR, DONE }
@@ -24,6 +28,10 @@ class CatRepository private constructor(private val catApiService: CatApiService
 
     var _categories = MutableLiveData<List<CatsCategory>>()
     val categories = _categories
+
+    /**
+     * Posts the value of categories and API status to LiveData of respective things
+     */
     fun getCatCategories() {
         CoroutineScope(Dispatchers.IO).launch {
             _status.postValue(CatApiStatus.LOADING)
@@ -43,6 +51,9 @@ class CatRepository private constructor(private val catApiService: CatApiService
         getCatCategories()
     }
 
+    /**
+     * provides method for singleton object
+     */
     companion object {
         @Volatile
         private var instance: CatRepository? = null
@@ -51,6 +62,9 @@ class CatRepository private constructor(private val catApiService: CatApiService
         }
     }
 
+    /**
+     * @return a flow of Paging Data with Cat Images
+     */
     fun letCatFlow(
         pagingConfig: PagingConfig = getDefaultPagingConfig(),
         categoryList: List<CatsCategory>

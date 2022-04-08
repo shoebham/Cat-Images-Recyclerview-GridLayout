@@ -2,6 +2,9 @@ package com.example.images_gridlayout.models
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Model class for Cat breed
+ */
 class CatBreed {
     var id: String = ""
     var name: String = ""

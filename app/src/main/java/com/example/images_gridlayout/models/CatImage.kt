@@ -1,5 +1,8 @@
 package com.example.images_gridlayout.models
 
+/**
+ * Model class for Cat Image
+ */
 class CatImage(
     var id: String,
     var url: String,

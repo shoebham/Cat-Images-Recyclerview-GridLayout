@@ -14,6 +14,9 @@ import com.example.images_gridlayout.databinding.ItemItemBinding
 import com.example.images_gridlayout.models.CatUiModel
 import java.util.concurrent.atomic.AtomicInteger
 
+/**
+ * Recyclerview Adapter for Images with pagination support
+ */
 class ItemsAdapter : PagingDataAdapter<CatUiModel, RecyclerView.ViewHolder>(diffutil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

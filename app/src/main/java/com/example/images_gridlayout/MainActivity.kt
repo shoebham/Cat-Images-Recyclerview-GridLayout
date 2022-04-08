@@ -23,6 +23,9 @@ import com.example.images_gridlayout.utils.InjectorUtils
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * MainActivity class that initialises views
+ */
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var factory: MainActivityViewModelFactory
@@ -44,6 +47,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Initialises the viewmodel,observes the api status,
+     * and gets the categories in the first call
+     */
     fun initUi() {
         factory = InjectorUtils.provideMainActivityViewModelFactory(application)
         viewModel = ViewModelProvider(this, factory)
@@ -61,16 +68,20 @@ class MainActivity : AppCompatActivity() {
             initTabLayout()
             initMediator()
             fetchCat()
-//            binding.recyclerview.adapter?.notifyDataSetChanged()
         })
     }
 
+    /**
+     * shows Error if API call throws error
+     */
     fun showError(boolean: Boolean) {
         binding.error.isVisible = boolean
     }
 
+    /**
+     * Initialises tab layout after getting category in the first call
+     */
     fun initTabLayout() {
-//        viewModel.categoryMap.value
         if (categoryList.isEmpty()) {
             binding.tabs.addTab((binding.tabs.newTab().setText("")))
         } else {
@@ -80,6 +91,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * fetches the cats images and paginates it
+     */
     private fun fetchCat() {
         lifecycleScope.launch {
             viewModel.fetchImage(categoryList).collectLatest {
@@ -88,6 +102,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Initialises recyclerview with cat images adapter
+     * and also appends loader at the end of list
+     *
+     */
     private fun initRecyclerView() {
         adapter = ItemsAdapter()
         val footerAdapter = LoaderAdapter(adapter::retry)
@@ -113,6 +132,9 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Initialises the tab sync between categories and tabs
+     */
     private fun initMediator() {
         tabbedListMediator = TabbedListMediator(
             binding.outerrecyclerview,

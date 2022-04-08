@@ -11,8 +11,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * ViewModel class which inherits from AndroidViewModel for context support
+ * @param catRepository instance of repository class to get paging data from it
+ * @param application instance of the current application
+ */
 class MainActivityViewModel(private val catRepository: CatRepository, application: Application) :
     AndroidViewModel(application) {
+
+    /**
+     * fetches images from server and inserts seperator on new category of images
+     * @param categoryList List of category of cats for getting images from a specific category
+     * @return paging data containing catimages or catheader
+     */
     fun fetchImage(categoryList: List<CatsCategory>): Flow<PagingData<CatUiModel>> {
         return catRepository.letCatFlow(categoryList = categoryList).map {
             it.map {

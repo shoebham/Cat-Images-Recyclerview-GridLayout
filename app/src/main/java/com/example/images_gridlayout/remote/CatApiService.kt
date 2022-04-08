@@ -28,6 +28,9 @@ object CatApi {
     }
 }
 
+/**
+ * interface for sending API request
+ */
 interface CatApiService {
     @GET("/v1/images/search")
     suspend fun getCatsByCategory(

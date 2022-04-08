@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.images_gridlayout.R
 import com.example.images_gridlayout.databinding.LoadingBinding
 
+/**
+ * Loader Adapter for loading state at the bottom of pagination
+ */
 class LoaderAdapter(
     private val retry: () -> Unit
 ) : LoadStateAdapter<LoaderAdapter.LoadStateViewHolder>() {
