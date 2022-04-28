@@ -7,5 +7,8 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:textSize="18sp"
-    android:textColor="@color/purple_500"
+    android:layout_marginBottom="5dp"
+    android:textAllCaps="true"
+    android:textColor="@color/teal_200"
+    android:paddingStart="10dp"
     tools:ignore="MissingConstraints" />

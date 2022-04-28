@@ -76,7 +76,7 @@ class CatRepository private constructor(private val catApiService: CatApiService
     }
 
     fun getDefaultPagingConfig(): PagingConfig {
-        return PagingConfig(pageSize = 1, enablePlaceholders = false, initialLoadSize = 3)
+        return PagingConfig(pageSize = 1, enablePlaceholders = false, initialLoadSize = 3, jumpThreshold = 5)
     }
 
 }

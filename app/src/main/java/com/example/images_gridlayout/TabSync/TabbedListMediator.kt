@@ -133,11 +133,11 @@ class TabbedListMediator(
             val position = tab.position
             if (mIsSmoothScroll) {
                 Log.i("shubham", "position=${position} mIndices[position]=${mIndices[position]}")
-                smoothScroller.targetPosition = mIndices[position] + (50 * position)
+                smoothScroller.targetPosition = mIndices[position] + (60 * position)
                 mRecyclerView.layoutManager?.startSmoothScroll(smoothScroller)
             } else {
                 (mRecyclerView.layoutManager as GridLayoutManager?)?.scrollToPositionWithOffset(
-                    mIndices[position] + (50 * position),
+                    mIndices[position] + (60 * position),
                     0
                 )
                 mTabClickFlag = false
@@ -177,8 +177,8 @@ class TabbedListMediator(
             if (mRecyclerState == RecyclerView.SCROLL_STATE_DRAGGING
                 || mRecyclerState == RecyclerView.SCROLL_STATE_SETTLING
             ) {
-                Log.i("shubham", "itemposition${itemPosition} itemsize $itemSize")
-                itemPosition /= 50
+//                Log.i("shubham", "itemposition${itemPosition} itemsize $itemSize")
+                itemPosition /= 60
                 if (itemPosition <= 0) itemPosition = 0
                 for (i in mIndices.indices) {
                     if (itemPosition == mIndices[i]) {

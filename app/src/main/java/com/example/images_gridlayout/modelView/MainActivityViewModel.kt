@@ -29,12 +29,13 @@ class MainActivityViewModel(private val catRepository: CatRepository, applicatio
             it.map {
                 CatUiModel.CatItem(it)
             }.insertSeparators<CatUiModel.CatItem, CatUiModel> { before, after ->
-                Log.i(
-                    "mainactivityviewmodel",
-                    "${before} ${after?.catImage?.categories?.get(0)?.name!!}"
-                )
+//                Log.i(
+//                    "mainactivityviewmodel",
+//                    "${before} ${after?.catImage?.categories?.get(0)?.name!!}"
+//                )
                 when {
                     before == null -> CatUiModel.CatHeader(after?.catImage?.categories?.get(0)?.name!!)
+                    after ==null-> return@insertSeparators null
                     after?.catImage?.categories?.get(0)?.name != before?.catImage?.categories?.get(0)?.name -> CatUiModel.CatHeader(
                         after?.catImage?.categories?.get(0)?.name!!
                     )

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.LoadState
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,10 @@ import com.bumptech.glide.Glide
 import com.example.images_gridlayout.databinding.ItemBinding
 import com.example.images_gridlayout.databinding.ItemItemBinding
 import com.example.images_gridlayout.models.CatUiModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -20,7 +25,6 @@ import java.util.concurrent.atomic.AtomicInteger
 class ItemsAdapter : PagingDataAdapter<CatUiModel, RecyclerView.ViewHolder>(diffutil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
         return when (viewType) {
             0 -> ItemViewHolder.from(parent)
             else -> HeaderViewHolder.from(parent)
@@ -44,6 +48,7 @@ class ItemsAdapter : PagingDataAdapter<CatUiModel, RecyclerView.ViewHolder>(diff
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         val item = getItem(position)
         if (holder is ItemViewHolder) {
             holder.bind(item as CatUiModel.CatItem)
@@ -64,6 +69,9 @@ class ItemsAdapter : PagingDataAdapter<CatUiModel, RecyclerView.ViewHolder>(diff
 
     override fun getItemViewType(position: Int): Int {
 //        if (items.get(0).type?.javaClass == com.example.emoji_sticker_keyboard.models.Image::class.java) return 1;
+        loadStateFlow.map{
+            Log.i("shubham","loadstateflow:${it}")
+        }
         return when (getItem(position)) {
             is CatUiModel.CatItem -> 0
             is CatUiModel.CatHeader -> 1
@@ -94,6 +102,7 @@ class ItemsAdapter : PagingDataAdapter<CatUiModel, RecyclerView.ViewHolder>(diff
         }
 
         fun bind(catItem: CatUiModel.CatItem) {
+
             Glide.with(binding.root.context).load(catItem.catImage.url).into(binding.itemImageView)
 //            binding.itemImageView.load(catItem.catImage.url)
         }

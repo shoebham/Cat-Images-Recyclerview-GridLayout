@@ -35,6 +35,7 @@ interface CatApiService {
     @GET("/v1/images/search")
     suspend fun getCatsByCategory(
         @Query("limit") n: Int,
+        @Query("page")page:Int,
         @Query("category_ids", encoded = true) breedIds: String
     ): List<CatImage>
 

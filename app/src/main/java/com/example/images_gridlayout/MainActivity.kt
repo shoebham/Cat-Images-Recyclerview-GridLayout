@@ -3,10 +3,13 @@ package com.example.images_gridlayout
 import android.content.ClipData
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +24,8 @@ import com.example.images_gridlayout.models.CatsCategory
 import com.example.images_gridlayout.repository.CatRepository
 import com.example.images_gridlayout.utils.InjectorUtils
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
@@ -97,9 +102,13 @@ class MainActivity : AppCompatActivity() {
     private fun fetchCat() {
         lifecycleScope.launch {
             viewModel.fetchImage(categoryList).collectLatest {
+                Log.i("shubham","fetchimage collectlatest:${it}")
+                Log.i("shubham","loadstate in fetchimage:${adapter}")
                 adapter.submitData(it)
+
             }
         }
+
     }
 
     /**
@@ -113,6 +122,7 @@ class MainActivity : AppCompatActivity() {
         binding.outerrecyclerview.adapter = adapter.withLoadStateFooter(
             footer = footerAdapter
         )
+
         binding.outerrecyclerview.layoutManager = GridLayoutManager(this, 4)
         (binding.outerrecyclerview.layoutManager as GridLayoutManager).setSpanSizeLookup(object :
             GridLayoutManager.SpanSizeLookup() {
