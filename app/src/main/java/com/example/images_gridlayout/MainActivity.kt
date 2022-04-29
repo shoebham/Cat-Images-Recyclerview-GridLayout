@@ -10,12 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.paging.map
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.images_gridlayout.TabSync.TabbedListMediator
 import com.example.images_gridlayout.adapters.ItemsAdapter
 import com.example.images_gridlayout.adapters.LoaderAdapter
+import com.example.images_gridlayout.adapters.PlaceHolderAdapter
 import com.example.images_gridlayout.databinding.ActivityMainBinding
 import com.example.images_gridlayout.databinding.ItemItemBinding
 import com.example.images_gridlayout.modelView.MainActivityViewModel
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     private var recyclerViewPool = RecyclerView.RecycledViewPool()
     private lateinit var indicesList: List<Int>
     private var categoryList: List<CatsCategory> = emptyList()
+    private lateinit var concatAdapter: ConcatAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -102,8 +105,10 @@ class MainActivity : AppCompatActivity() {
     private fun fetchCat() {
         lifecycleScope.launch {
             viewModel.fetchImage(categoryList).collectLatest {
-                Log.i("shubham","fetchimage collectlatest:${it}")
-                Log.i("shubham","loadstate in fetchimage:${adapter}")
+                Log.i("shubham", "fetchimage collectlatest:${it}")
+
+//                Log.i("shubham","loadstate in fetchimage:${adapter}")
+//                concatAdapter.addAdapter(adapter)
                 adapter.submitData(it)
 
             }
@@ -118,16 +123,17 @@ class MainActivity : AppCompatActivity() {
      */
     private fun initRecyclerView() {
         adapter = ItemsAdapter()
-        val footerAdapter = LoaderAdapter(adapter::retry)
-        binding.outerrecyclerview.adapter = adapter.withLoadStateFooter(
-            footer = footerAdapter
-        )
+
+//        val footerAdapter = LoaderAdapter(adapter::retry)
+        val placeHolderAdapter = PlaceHolderAdapter()
+//        concatAdapter= ConcatAdapter(adapter,placeHolderAdapter)
+        binding.outerrecyclerview.adapter = adapter
 
         binding.outerrecyclerview.layoutManager = GridLayoutManager(this, 4)
         (binding.outerrecyclerview.layoutManager as GridLayoutManager).setSpanSizeLookup(object :
             GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                if (position == adapter.itemCount && footerAdapter.itemCount > 0)
+                if (position == adapter.itemCount)//d&& footerAdapter.itemCount > 0
                     return 4
                 if (adapter.getItemViewType(position) == 1) return 4
                 else

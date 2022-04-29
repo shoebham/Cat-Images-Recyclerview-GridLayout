@@ -30,19 +30,25 @@ class PageSource(
         try {
             var page = (params.key) ?: 0
 
-            Log.i("shubham","page:${page}")
+            Log.i("shubham", "page:${page}")
 
-            if(page==0||page%3==0){
-               category = categoryList.get(count.getAndIncrement()).id
-
-            }
-
-            var response = catApiService.getCatsByCategory(20,page,category.toString())
+//            if(page==0||page%3==0){
+            category = categoryList.get(page / 3).id
+//            }
+            var response = catApiService.getCatsByCategory(20, page, category.toString())
+            val loadsize = params.loadSize
+            val newcount = response.size
+            val total = 60 * 7
+            val itemsbefore = page * 20
+            val itemsafter = total - (itemsbefore + newcount)
+            Log.i("shubham", "newcount:$newcount itemsbefore:$itemsbefore itemsafter:$itemsafter")
 //            if(response.isEmpty())invalidate()
             return LoadResult.Page(
                 data = response,
-                prevKey = if (page==0) null else page-1,
-                nextKey =  if(response.isNotEmpty()) page + 1 else null
+                prevKey = if (page == 0) null else page - 1,
+                nextKey = page + 1,
+                itemsBefore = itemsbefore,
+                itemsAfter = itemsafter
             )
         } catch (e: Exception) {
             Log.i("Shubham", "${e}")
@@ -52,11 +58,13 @@ class PageSource(
 
     override fun getRefreshKey(state: PagingState<Int, CatImage>): Int? {
         state.anchorPosition?.let { anchorPosition ->
-            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
-                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            Log.i("shubham", "anchorpage${anchorPage}")
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
-        Log.i("shubham","anchor position:${state.anchorPosition}")
-        return  null
+        Log.i("shubham", "anchor position:${state.anchorPosition}")
+        return null
+
     }
 
     override val keyReuseSupported: Boolean

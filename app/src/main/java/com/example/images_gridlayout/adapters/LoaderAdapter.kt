@@ -3,6 +3,8 @@ package com.example.images_gridlayout.adapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
@@ -10,6 +12,7 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.images_gridlayout.R
 import com.example.images_gridlayout.databinding.LoadingBinding
+
 
 /**
  * Loader Adapter for loading state at the bottom of pagination
@@ -30,7 +33,7 @@ class LoaderAdapter(
         parent: ViewGroup,
         loadState: LoadState
     ): LoadStateViewHolder {
-        Log.i("loaderadapter", "here:${loadState}")
+        itemCount
 
         return LoadStateViewHolder(parent, retry)
     }
