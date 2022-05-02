@@ -28,7 +28,6 @@ class PlaceHolderAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_item
     }
-
     class ItemViewHolder(private val binding: ItemItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         companion object {

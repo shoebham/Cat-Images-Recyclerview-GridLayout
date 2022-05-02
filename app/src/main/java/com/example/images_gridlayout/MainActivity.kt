@@ -155,7 +155,7 @@ class MainActivity : AppCompatActivity() {
         tabbedListMediator = TabbedListMediator(
             binding.outerrecyclerview,
             binding.tabs,
-            indicesList, true
+            indicesList, false
         )
         tabbedListMediator.attach()
 

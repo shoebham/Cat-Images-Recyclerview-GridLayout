@@ -8,6 +8,7 @@ import com.example.images_gridlayout.models.CatImage
 import com.example.images_gridlayout.models.CatsCategory
 import com.example.images_gridlayout.remote.CatApiService
 import java.lang.Exception
+import java.lang.Math.max
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -33,7 +34,7 @@ class PageSource(
             Log.i("shubham", "page:${page}")
 
 //            if(page==0||page%3==0){
-            category = categoryList.get(page / 3).id
+            category = categoryList.get((page) / 3).id
 //            }
             var response = catApiService.getCatsByCategory(20, page, category.toString())
             val loadsize = params.loadSize
@@ -57,16 +58,14 @@ class PageSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, CatImage>): Int? {
-        state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            Log.i("shubham", "anchorpage${anchorPage}")
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
-        }
-        Log.i("shubham", "anchor position:${state.anchorPosition}")
+        val anchorPosition = state.anchorPosition ?: return null
+//        val item = state.closestItemToPosition(anchorPosition) ?: return null
+        Log.i("shubham", "anchorposition: $anchorPosition pages size:${state.pages.size} ")
         return null
 
     }
 
+    private fun ensureValidKey(key: Int) = max(0, key)
     override val keyReuseSupported: Boolean
         get() = true
     override val jumpingSupported: Boolean
